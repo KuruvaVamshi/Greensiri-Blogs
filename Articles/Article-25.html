@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+<link rel="stylesheet" href="related-cards-style.css">
+
+    <style>
+        /* RESET */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* NAVBAR */
+        nav {
+            position: relative;
+            top: 0;
+            width: 100%;
+            padding: 20px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        /* LOGO */
+        .nav-logo img {
+            height: 50px;
+        }
+
+        /* MENU */
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: #000;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* HAMBURGER */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 26px;
+            height: 2px;
+            background: #000;
+            display: block;
+        }
+
+        /* MOBILE */
+        @media(max-width:768px) {
+
+            .hamburger {
+                display: flex;
+                z-index: 2001;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 30px;
+                background: rgba(0, 0, 0, 0.8);
+                transform: translateY(-100%);
+                transition: 0.4s;
+                z-index: 2000;
+            }
+
+            .nav-menu.active {
+                transform: translateY(0);
+            }
+
+            .nav-menu a {
+                font-size: 20px;
+                color: #fff;
+            }
+        }
+
+        /* DEMO BACKGROUND */
+        body {
+            background: #fff;
+        }
+
+        /* ARTICLE */
+        .container {
+            width: 85%;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .article {
+            padding: 40px 0 60px;
+        }
+
+        .article h1 {
+            font-family: 'Poppins', serif;
+            font-size: 42px;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #000;
+        }
+
+        .article img {
+            width: 100%;
+            max-width: 1000px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 20px;
+            display: block;
+            margin: 0 auto 30px;
+        }
+
+        .article p {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 18px;
+            color: #222;
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: #0b0b0b;
+            color: white;
+            padding: 60px 8%;
+            min-height: 30vh;
+        }
+
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding-bottom: 40px;
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 180px;
+            padding: 15px 40px;
+            border-right: 2px solid #fff;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-col:first-child {
+            padding-left: 0;
+            flex: 1.5;
+        }
+
+        .footer-col:nth-child(1),
+        .footer-col:nth-child(2) {
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .footer-col:last-child {
+            border-right: none;
+            padding-right: 0;
+        }
+
+        .footer-bold {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .footer-text {
+            font-size: 11px;
+            line-height: 1.6;
+            margin-top: 10px;
+            white-space: nowrap;
+        }
+
+        .footer-contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 11px;
+            margin-bottom: 10px;
+        }
+
+        .footer-contact-item i {
+            width: 25px;
+            height: 25px;
+            border: 1px solid #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+
+        .footer-logo {
+            width: 150px;
+            filter: brightness(0) invert(1);
+        }
+
+        .footer-tagline {
+            font-size: 9px;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        .footer-subscribe h5,
+        .footer-social h5 {
+            font-size: 11px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .footer-social h5 {
+            font-size: 13px;
+        }
+
+        .subscribe-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .subscribe-form input {
+            background: transparent;
+            border: 1px solid #fff;
+            padding: 8px 12px;
+            color: white;
+            font-size: 11px;
+            border-radius: 4px;
+        }
+
+        .subscribe-form button {
+            background: transparent;
+            border: 1px solid #fff;
+            padding: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        .subscribe-form button:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .subscribe-note {
+            font-size: 8px;
+            color: #fff;
+            margin-top: 5px;
+            white-space: nowrap;
+        }
+
+        .footer-social-icons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .footer-social-icons a {
+            width: 36px;
+            height: 36px;
+            box-shadow: 0 0 0 1.5px #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .footer-social-icons a:hover {
+            background: #fff;
+            color: #000;
+            box-shadow: 0 0 0 1.5px #fff;
+        }
+
+        .footer-bottom {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .footer-bottom a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+        }
+
+        .footer-bottom a:hover {
+            color: #fff;
+        }
+
+        .highlight {
+            color: #fff;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+
+        <!-- LOGO -->
+        <div class="nav-logo">
+            <img
+                src="https://raw.githubusercontent.com/vatsalvarma/Client-Project-/refs/heads/main/GREENSIRI_color.about.png">
+        </div>
+
+        <!-- MENU -->
+        <ul class="nav-menu">
+            <li><a href="https://vatsalvarma.github.io/GREENSIRI---prbxxxx/" onclick="closeMenu()">HOME</a></li>
+            <li><a href="https://vatsalvarma.github.io/TarniFarms/" onclick="closeMenu()">FARMS</a></li>
+            <li><a href="#residence" onclick="closeMenu()">RESIDENTIALS</a></li>
+            <li><a href="#villa" onclick="closeMenu()">VILLAS</a></li>
+            <li><a href="#">SHOT AT SITE</a></li>
+            <li><a href="https://vatsalvarma.github.io/About-Greensiri-page/">COMPANY</a></li>
+            <li><a href="https://vatsalvarma.github.io/Greensiri-blogs-/">BLOGS</a></li>
+            <li><a href="https://vatsalvarma.github.io/Greensiri-Contact/">CONTACT</a></li>
+        </ul>
+
+        <!-- HAMBURGER -->
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </nav>
+
+    <section class="article container">
+        <h1>Peaceful Living Options for Every Lifestyle</h1>
+
+        <img
+            src="https://media.istockphoto.com/id/1227607862/photo/green-detox-juice-made-from-cauliflower-lettuce-lemon-green-apple-cucumber-and-various.jpg?s=2048x2048&w=is&k=20&c=fX39-eh42edUr3i5gcchrrwmVxjSYvY52An-X-qY_B4=">
+
+
+        <p>If you’re dreaming of a peaceful escape from city life, farmland living provides a refreshing alternative.
+            From eco-friendly homes to luxurious villas, there are many ways to create your ideal countryside retreat.
+            Whether you seek a rural getaway, a permanent home, or a sustainable residence, these peaceful living
+            options cater to every lifestyle and budget. <br>
+        </p>
+
+        <h2>🏡 1. Eco-Friendly Homes: Sustainable & Smart</h2>
+        <p>
+            Eco-friendly homes are designed using green materials like mud blocks, bamboo, and recycled wood to reduce
+            environmental impact. They combine modern design with energy efficiency, making them perfect for the
+            conscious homeowner. <br><br>
+            <strong>Best for:</strong> Environmentally conscious individuals <br>
+            <strong>Price Range:</strong> ₹60 lakh – ₹1.5 crore <br><br>
+            👉 Explore how eco-living aligns with sustainable real estate trends on GreenSiri. <br>
+        </p>
+
+        <h2>🌲 2. Log Cabins: Rustic Charm in Nature</h2>
+        <p>
+            Log cabins offer a warm, cozy aesthetic with natural wooden interiors. Thanks to their insulation and
+            minimal footprint, they are perfect for off-grid living. <br><br>
+            <strong>Best for:</strong> Nature lovers and solitude seekers <br>
+            <strong>Price Range:</strong> ₹40 lakh – ₹1.5 crore <br><br>
+            Additionally, log cabins can double as short-term rentals or weekend retreats, providing both comfort and
+            potential income. <br>
+        </p>
+
+        <h2>🌾 3. Ranch-Style Homes: Open and Spacious</h2>
+        <p>
+            Ranch-style homes feature single-story layouts and open living spaces. These designs promote easy
+            indoor-outdoor flow and are ideal for large families who enjoy space and privacy. <br><br>
+            <strong>Best for:</strong> Families and countryside living <br>
+            <strong>Price Range:</strong> ₹70 lakh – ₹2 crore <br><br>
+            For those exploring family plots near Bangalore, see our guide on farmland living benefits. <br>
+        </p>
+
+        <h2>🌿 4. Wooden Cabins: Cozy Countryside Retreats</h2>
+        <p>
+            Wooden cabins bring simplicity and warmth together. They’re easy to maintain and perfect as permanent or
+            weekend homes in natural settings. <br><br>
+            <strong>Best for:</strong> Minimalist living or vacation retreats <br>
+            <strong>Price Range:</strong> ₹3 lakh – ₹25 lakh <br><br>
+            Transitioning to cabin life helps reduce stress and reconnects you with nature — something city dwellers
+            increasingly crave. <br>
+        </p>
+
+        <h2>🌞 5. Courtyard Houses: Nature Meets Privacy</h2>
+        <p>
+            Courtyard houses offer a central open space that encourages natural light and cross-ventilation. This
+            architectural style combines elegance, sustainability, and comfort. <br><br>
+            <strong>Best for:</strong> Full-time or luxury homes <br>
+            <strong>Price Range:</strong> ₹10 lakh – ₹50 lakh <br><br>
+            Such homes perfectly balance modern design and traditional Indian architecture, making them ideal for warm
+            climates like South India. <br>
+        </p>
+
+        <h2>🏠 6. Tiny Homes: Minimalism with Purpose</h2>
+        <p>
+            Tiny homes are compact, efficient, and designed for budget-friendly living. Despite their size, they
+            maximize space through clever layouts and multi-functional furniture. <br><br>
+            <strong>Best for:</strong> Singles or couples embracing simplicity <br>
+            <strong>Price Range:</strong> ₹15 lakh – ₹50 lakh <br><br>
+            Transitioning to a tiny home reduces costs and environmental impact — a win-win for mindful living. <br>
+        </p>
+
+        <h2>💎 7. Luxury Villas: Premium Living in Nature</h2>
+        <p>
+            Luxury villas redefine countryside comfort. These high-end homes come with smart features, landscaped
+            gardens, and private pools. They offer both exclusivity and serenity. <br><br>
+            <strong>Best for:</strong> High-income individuals seeking comfort and prestige <br>
+            <strong>Price Range:</strong> ₹1.5 crore – ₹5 crore+ <br><br>
+            Discover luxury villa investment insights in our Lepakshi Real Estate Investment Guide. <br>
+        </p>
+
+        <h2>🏡 8. Cottages: Timeless, Cozy & Charming</h2>
+        <p>
+            Cottages embody the warmth of traditional countryside homes. They blend rustic charm with modern amenities,
+            making them perfect for weekend getaways or permanent stays. <br><br>
+            <strong>Best for:</strong> Small families or vacation homes <br>
+            <strong>Price Range:</strong> ₹30 lakh – ₹70 lakh <br><br>
+            With their cozy atmosphere and aesthetic appeal, cottages also make for excellent Airbnb-style retreats.
+            <br>
+        </p>
+
+        <h2>🌍 9. Cob Houses: Naturally Built, Naturally Beautiful</h2>
+        <p>
+            Cob houses are made from clay, sand, and straw — materials that breathe and regulate temperature naturally.
+            They are eco-friendly, durable, and cost-effective. <br><br>
+            <strong>Best for:</strong> DIY builders and sustainable lifestyle enthusiasts <br>
+            <strong>Price Range:</strong> ₹3 lakh – ₹12 lakh <br><br>
+            Because they are handcrafted, each cob house feels unique — a perfect reflection of slow, peaceful living.
+            <br>
+        </p>
+
+        <h2>🌳 10. Treehouses: Adventure with a View</h2>
+        <p>
+            Modern treehouses aren’t just for children — they’re eco-retreats for adults too! Built on strong platforms
+            among trees, they offer incredible views and a deep connection with nature. <br><br>
+            <strong>Best for:</strong> Eco-tourism or adventurous stays <br>
+            <strong>Price Range:</strong> ₹5 lakh – ₹20 lakh <br><br>
+            Learn more about India’s growing eco-resort trends at Incredible India Tourism. <br>
+        </p>
+
+        <h2>🌾 Conclusion: Find Your Perfect Countryside Home</h2>
+        <p>
+            From simple camping setups to luxurious barn conversions, farmland living has something for everyone.
+            Whether you dream of a tiny cabin, a ranch-style home, or a luxury villa, there’s an option that fits your
+            lifestyle and budget. <br><br>
+            Choosing any of these peaceful living options allows you to enjoy cleaner air, a slower pace, and a closer
+            connection to nature — something that’s priceless in today’s fast-paced world. <br><br>
+            👉 Ready to explore farmland living projects? Visit GreenSiri’s Tapovan Project for real examples of
+            peaceful living near Bengaluru. <br>
+        </p>
+
+    </section>
+    <section class="related">
+        <h2 class="related-title">YOU MAY ALSO READ</h2>
+
+    <div class="related-grid">
+
+        <!-- Card 1 -->
+        <div class="related-card" onclick="location.href='Article-3.html'">
+            <img src="https://media.istockphoto.com/id/1227607862/photo/green-detox-juice-made-from-cauliflower-lettuce-lemon-green-apple-cucumber-and-various.jpg?s=2048x2048&w=is&k=20&c=fX39-eh42edUr3i5gcchrrwmVxjSYvY52An-X-qY_B4=">
+            <p>The Ultimate Guide to Buying Farmland in India</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="related-card" onclick="location.href='Article-18.html'">
+            <img src="https://media.istockphoto.com/id/1227607862/photo/green-detox-juice-made-from-cauliflower-lettuce-lemon-green-apple-cucumber-and-various.jpg?s=2048x2048&w=is&k=20&c=fX39-eh42edUr3i5gcchrrwmVxjSYvY52An-X-qY_B4=">
+            <p>Farmland Investment ROI Near Bangalore | Green Siri Tarini Farms</p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="related-card" onclick="location.href='Article-21.html'">
+            <img src="https://media.istockphoto.com/id/1227607862/photo/green-detox-juice-made-from-cauliflower-lettuce-lemon-green-apple-cucumber-and-various.jpg?s=2048x2048&w=is&k=20&c=fX39-eh42edUr3i5gcchrrwmVxjSYvY52An-X-qY_B4=">
+            <p>The Growth of Eco-Friendly Communities in Bangalore</p>
+        </div>
+
+    </div>
+</section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <span class="footer-bold">GREENSIRI INFRA LLP</span>
+                <p class="footer-text">
+                    130/2, 3RD FLOOR, OMKARA BUILDING,<br>
+                    INTERNATIONAL AIRPORT ROAD, NEHRU NAGAR,<br>
+                    YELAHANKA, BENGALURU - 64
+                </p>
+            </div>
+
+            <div class="footer-col">
+                <a href="tel:+919511125552" class="footer-contact-item" style="color: white; text-decoration: none;">
+                    <i class="fa-solid fa-phone"></i>
+                    +91 95111 25552
+                </a>
+                <a href="mailto:contact@greensiri.in" class="footer-contact-item" style="color: white; text-decoration: none;">
+                    <i class="fa-regular fa-envelope"></i>
+                    contact@greensiri.in
+                </a>
+            </div>
+
+            <div class="footer-col">
+                <div>
+                    <img src="https://raw.githubusercontent.com/vatsalvarma/Client-Project-/refs/heads/main/Asset%2011X.png"
+                        class="footer-logo">
+                </div>
+                <p class="footer-tagline"></p>
+            </div>
+
+            <div class="footer-col footer-subscribe">
+                <h5>DO YOU HAVE ANY QUERY?</h5>
+                <form class="subscribe-form">
+                    <input type="email" placeholder="example@email.com" required
+                        oninvalid="this.setCustomValidity('please enter valid email address')"
+                        oninput="this.setCustomValidity('')">
+                    <button type="submit">SUBSCRIBE</button>
+                </form>
+                <div class="subscribe-note">
+                    PLEASE FEEL FREE TO SHARE ANY QUERIES YOU HAVE
+                </div>
+            </div>
+
+            <div class="footer-col footer-social">
+                <h5>SOCIAL MEDIA LINKS</h5>
+                <div class="footer-social-icons">
+                    <a href="https://www.facebook.com/greensiriproperties" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/greensiri_properties" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@Greensiri" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="https://in.pinterest.com/greensiriproperties" target="_blank"><i class="fa-brands fa-pinterest-p"></i></a>
+                    <a href="https://www.linkedin.com/company/greensiri-infra-llp/posts/?feedView=all" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="https://wa.me/919511125552?text=" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>
+                &copy; Copyright 2026
+                <span class="highlight">GREENSIRI PROPERTIES</span>.
+                All Rights Reserved |
+
+                Website Design by
+                <span class="highlight">PRIZMABRIXX</span>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.querySelector(".nav-menu").classList.toggle("active");
+        }
+    </script>
+
+</body>
+
+</html>
